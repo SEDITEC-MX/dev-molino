@@ -1,0 +1,33 @@
+[09-Oct-2023 12:52:28 America/Mexico_City] PHP Parse error:  syntax error, unexpected token "=>" in /home2/casaelmo/public_html/ajax/registro_cobro.php on line 34
+[07-Sep-2024 21:49:30 America/Mexico_City] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:49:30 America/Mexico_City] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php:4
+Stack trace:
+#0 /home2/casaelmo/public_html/config/conec.php(4): mysqli->__construct('db-pro-molino', 'casaelmo_molino', Object(SensitiveParameterValue), 'casaelmo_db_mol...')
+#1 /home2/casaelmo/public_html/modelos/Usuario.php(3): require('/home2/casaelmo...')
+#2 /home2/casaelmo/public_html/ajax/usuario.php(3): require_once('/home2/casaelmo...')
+#3 {main}
+  thrown in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:49:33 America/Mexico_City] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:49:33 America/Mexico_City] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php:4
+Stack trace:
+#0 /home2/casaelmo/public_html/config/conec.php(4): mysqli->__construct('db-pro-molino', 'casaelmo_molino', Object(SensitiveParameterValue), 'casaelmo_db_mol...')
+#1 /home2/casaelmo/public_html/modelos/Usuario.php(3): require('/home2/casaelmo...')
+#2 /home2/casaelmo/public_html/ajax/usuario.php(3): require_once('/home2/casaelmo...')
+#3 {main}
+  thrown in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:49:38 America/Mexico_City] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:49:38 America/Mexico_City] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php:4
+Stack trace:
+#0 /home2/casaelmo/public_html/config/conec.php(4): mysqli->__construct('db-pro-molino', 'casaelmo_molino', Object(SensitiveParameterValue), 'casaelmo_db_mol...')
+#1 /home2/casaelmo/public_html/modelos/Usuario.php(3): require('/home2/casaelmo...')
+#2 /home2/casaelmo/public_html/ajax/usuario.php(3): require_once('/home2/casaelmo...')
+#3 {main}
+  thrown in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:50:08 America/Mexico_City] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php on line 4
+[07-Sep-2024 21:50:08 America/Mexico_City] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for db-pro-molino failed: Name or service not known in /home2/casaelmo/public_html/config/conec.php:4
+Stack trace:
+#0 /home2/casaelmo/public_html/config/conec.php(4): mysqli->__construct('db-pro-molino', 'casaelmo_molino', Object(SensitiveParameterValue), 'casaelmo_db_mol...')
+#1 /home2/casaelmo/public_html/modelos/Usuario.php(3): require('/home2/casaelmo...')
+#2 /home2/casaelmo/public_html/ajax/usuario.php(3): require_once('/home2/casaelmo...')
+#3 {main}
+  thrown in /home2/casaelmo/public_html/config/conec.php on line 4
