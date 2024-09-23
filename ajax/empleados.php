@@ -103,8 +103,8 @@ switch ($_GET["op"])
 			{
 
 				$data[]=array(
-				"0"=>$empleado['condicion_empleado']== 1 ? '<botton class="btn btn-warning" onclick="mostrar('.$empleado['id_empleado'].')"><i class="fa fa-pencil"></i></botton>'.
-				' <botton class="btn btn-danger" onclick="desactivar('.$empleado['id_empleado'].')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$empleado['id_empleado'].')"><i class="fa fa-pencil"></i></botton>'.
+				"0"=>$empleado['condicion_empleado']== 1 ? '<botton class="btn btn-warning" onclick="mostrar('.$empleado['id_empleado'].')"><i class="fas fa-pencil-alt"></i></botton>'.
+				' <botton class="btn btn-danger" onclick="desactivar('.$empleado['id_empleado'].')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$empleado['id_empleado'].')"><i class="fas fa-pencil-alt"></i></botton>'.
 				' <botton class="btn btn-primary" onclick="activar('.$empleado['id_empleado'].')"><i class="fa fa-check"></i></botton>',
 				"1"=>$empleado['nombre_empleado'],
 				"2"=>$empleado['id_categoria_servicio'],

@@ -31,14 +31,15 @@ email_pago varchar(200)
 		$metodo_pago,
 		$email_pago,
 		$notas_pago,
-		$id_categoria_servicio
+		$id_categoria_servicio,
+		$id_usuario
 	)
 	{
 		$arregloDatos = array($id_evento, $id_proveedor, $fecha_pago, $monto_pago, 
-			$metodo_pago,  $email_pago, $notas_pago, $id_categoria_servicio);
+			$metodo_pago,  $email_pago, $notas_pago, $id_categoria_servicio, $id_usuario);
 		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
-		email_pago, notas_pago, id_categoria_servicio) 
-		VALUES (?,?,?,?,?,?,?,?)";
+		email_pago, notas_pago, id_categoria_servicio, id_usuario) 
+		VALUES (?,?,?,?,?,?,?,?,?)";
 
 		return ejecutarConsulta($sql, $arregloDatos);
 
@@ -156,8 +157,23 @@ email_pago varchar(200)
 		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
 		FROM pagos
 		INNER JOIN proveedores ON pagos.id_proveedor = proveedores.id_proveedor
-		LEFT JOIN categoria_servicio AS servicio ON pagos.id_categoria_servicio = servicio.id_categoria_servicio 
+		LEFT JOIN categoria_servicio AS servicio ON pagos.id_categoria_servicio = servicio.id_categoria_servicio
 		WHERE id_evento = ? 
+		ORDER BY TIMESTAMP(fecha_pago)";
+		return ejecutarSelect($sql, $arregloDatos);
+	}
+
+	public function listarPagosCaja($id_usuario)
+	{
+		$arregloDatos = array($id_usuario);
+		$sql="SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, evento.nombre_evento, pagos.metodo_pago, 
+		pagos.email_pago, pagos.notas_pago, proveedores.nombre_proveedor, 
+		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
+		FROM pagos
+		INNER JOIN proveedores ON pagos.id_proveedor = proveedores.id_proveedor
+		LEFT JOIN categoria_servicio AS servicio ON pagos.id_categoria_servicio = servicio.id_categoria_servicio
+		LEFT JOIN evento AS evento ON pagos.id_evento = evento.id_evento   
+		WHERE id_usuario = ? 
 		ORDER BY TIMESTAMP(fecha_pago)";
 		return ejecutarSelect($sql, $arregloDatos);
 	}

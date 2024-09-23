@@ -7,21 +7,19 @@ require_once "../modelos/Evento.php";
 Sesion::existeSesion();
 
 $archivos =new Archivos();
-$base_dir = "./../../archivos";
+//Ruta pro
+//$base_dir = "./../../archivos";
+
+//Ruta pre
+$base_dir = "./../archivos";
+
 /*
-
 Columnas de la tabla 'archivos'
-
 id_archivo int(11)
-
 nombreArchivo varchar(100)
-
 categoriaArchivo enum('cotizacion', 'documentacion', 'ine')
-
 fechaSubida timestamp
-
 id_evento int(11)
-
 */
 
 
@@ -30,7 +28,8 @@ switch ($_GET["op"]){
 		$id_evento = $_POST['idEvento'] ?? 0;
 		$id_evento = (int)$id_evento;
 		$categoriaArchivo =  $_POST['categoriaArchivo'] ?? '';
-		$archivosValidos = ['documentacion', 'ine', 'cotizacion'];
+		$archivosValidos = ['documentacion', 'ine', 'cotizacion','comprobante'];
+
 
 		if ($id_evento == 0 || !is_int($id_evento)){
 			$resp = array("codigo" => 0, "mensaje" => "Datos no válidos" );
@@ -41,6 +40,7 @@ switch ($_GET["op"]){
 		if (!in_array($categoriaArchivo, $archivosValidos)){
 			$resp = array("codigo" => 0, "mensaje" => "No es una categoría válida" );
 			echo json_encode($resp);
+			echo "cat: " . $categoriaArchivo;
 			exit;
 		}
 		

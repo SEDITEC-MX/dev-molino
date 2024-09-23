@@ -14,54 +14,45 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 
-$conexionPDO = new PDO($dsn, $user, $pass, $options);
 try {
-     $pdo = new PDO($dsn, $user, $pass, $options);
+    $conexionPDO = new PDO($dsn, $user, $pass, $options);
+    //echo "Conexión exitosa a la base de datos '$dbname' en '$host'."; // Mensaje de éxito
 } catch (\PDOException $e) {
-     // throw new \PDOException($e->getMessage(), (int)$e->getCode()); //la forma estándar de 'tirar' el error, lo dejo por si se necesita
-	printf("Falló la conexión %s\n",$e->getMessage());
+    printf("Falló la conexión: %s\n", $e->getMessage()); // Mensaje de error
+    exit; // Terminar la ejecución si la conexión falla
 }
 
+if (!function_exists('ejecutarConsulta')) {
+    function ejecutarConsulta($sql, $params = []) {
+        global $conexionPDO;
+        $query = $conexionPDO->prepare($sql)->execute($params);
+        return $query;
+    }
 
-if(!function_exists('ejecutarConsulta'))
-{
-	function ejecutarConsulta($sql, $params = [] ) //Los parámetros son opcionales
-	{
-		global $conexionPDO;
-		$query = $conexionPDO->prepare($sql)->execute($params);
-		return $query;
-	}
-	
-	function ejecutarSelect($sql, $params = [] ) //Los parámetros son opcionales
-	{
-		global $conexionPDO;
-		$stmt = $conexionPDO->prepare($sql);
-		$stmt->execute($params);
-		$results = $stmt->fetchAll();
-		return $results;
-	}
-	
-	function ejecutarConsultaSimpleFila($sql, $params = [] )
-	{
-		global $conexionPDO;
-		$stmt = $conexionPDO->prepare($sql);
-		$stmt->execute($params);
-		$row = $stmt->fetch();
-		return $row;
-	}
-	
-	function ejecutarConsulta_retornarID($sql)
-	{
-		global $conexionPDO;
-		$query = $conexionPDO->query($sql);
-		return $conexionPDO->insert_id;
-	}
-	
-	function limpiarCadena($str)
-	{
-		global $conexionPDO;
-		// $str = mysqli_real_escape_string ($conexionPDO,trim($str));
-		return htmlspecialchars($str);
-	}
+    function ejecutarSelect($sql, $params = []) {
+        global $conexionPDO;
+        $stmt = $conexionPDO->prepare($sql);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    function ejecutarConsultaSimpleFila($sql, $params = []) {
+        global $conexionPDO;
+        $stmt = $conexionPDO->prepare($sql);
+        $stmt->execute($params);
+        $row = $stmt->fetch();
+        return $row;
+    }
+
+    function ejecutarConsulta_retornarID($sql) {
+        global $conexionPDO;
+        $query = $conexionPDO->query($sql);
+        return $conexionPDO->lastInsertId(); // Cambié insert_id a lastInsertId
+    }
+
+    function limpiarCadena($str) {
+        return htmlspecialchars($str);
+    }
 }
 ?>

@@ -15,10 +15,12 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
   <!-- Enlaces a hojas de estilo (CSS) -->
+
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="../public/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../public/css/font-awesome.css">
+  <link rel="stylesheet" href="../public/css/all.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../public/css/AdminLTE.min.css">
   <!-- AdminLTE Skins -->
@@ -96,12 +98,12 @@
           <?php if (strpos($_SESSION['checkboxes'], 'a') !== false) { ?>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-calendar-check-o"></i>
-                <span>Eventos</span>
+                <i class="fas fa-calendar-alt"></i>
+                <span> Eventos</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="evento.php"><i class="fa fa-circle-o"></i> Listado de Eventos </a></li>
+                <li><a href="evento.php"><i class="fas fa-play-circle"></i>&nbsp; Listado de Eventos </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -121,8 +123,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="servicio.php"><i class="fa fa-circle-o"></i> Cátalogo de Servicios </a></li>
-                <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Categorías</a></li>
+                <li><a href="servicio.php"><i class="fas fa-play-circle"></i>&nbsp;Cátalogo de Servicios </a></li>
+                <li><a href="categoria.php"><i class="fas fa-play-circle"></i>&nbsp;Categorías</a></li>
               </ul>
             </li>
           <?php } ?>
@@ -134,8 +136,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="cobro.php"><i class="fa fa-circle-o"></i> Listar Eventos </a></li>
-                <li><a href="registro_cobro.php"><i class="fa fa-circle-o"></i> Registrar Cobro de Evento </a></li>
+                <li><a href="cobro.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Eventos </a></li>
+                <li><a href="registro_cobro.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar Cobro de Evento </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -147,8 +149,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pago.php"><i class="fa fa-circle-o"></i> Listar Pagos </a></li>
-                <li><a href="registro_pago.php"><i class="fa fa-circle-o"></i> Registrar Pago </a></li>
+                <li><a href="pago.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Pagos </a></li>
+                <li><a href="registro_pago.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar Pago </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -160,7 +162,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="proveedores.php"><i class="fa fa-circle-o"></i> Catálogo de Proveedores </a></li>
+                <li><a href="proveedores.php"><i class="fas fa-play-circle"></i>&nbsp;Catálogo de Proveedores </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -172,11 +174,22 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="empleados.php"><i class="fa fa-circle-o"></i> Listar Empleados </a></li>
-                <li><a href="pagos_empleados.php"><i class="fa fa-circle-o"></i> Pagos a empleados </a></li>
+                <li><a href="empleados.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Empleados </a></li>
+                <li><a href="pagos_empleados.php"><i class="fas fa-play-circle"></i>&nbsp;Pagos a empleados </a></li>
               </ul>
             </li>
           <?php } ?>
+          <li class="treeview">
+            <a href="#">
+              <i class="fas fa-cash-register"></i>
+              <span>&nbsp;&nbsp;Caja Chica</span>
+              <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="caja.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Caja Chica </a></li>
+              <li><a href="registro_caja.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar gasto de Caja Chica </a></li>
+            </ul>
+          </li>
           <hr>
 
           <?php if (strpos($_SESSION['checkboxes'], 'h') !== false) { ?>
@@ -205,7 +218,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Listar Usuarios </a></li>
+                <li><a href="usuario.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Usuarios </a></li>
               </ul>
             </li>
           <?php } ?>

@@ -1,8 +1,8 @@
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 4.0
+          <b>Version</b> 5.0
         </div>
-        <strong>Copyright &copy; 2023 <a href="https://www.seditec.com.mx">SEDITEC</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2024 <a href="https://www.seditec.com.mx">SEDITEC</a>.</strong> All rights reserved.
     </footer>    
     <!-- Excel -->		<script src="../public/js/xlsx.full.min.js"></script>	    <!-- jQuery 2.1.4 -->
     <script src="../public/js/jquery-3.1.1.min.js"></script>

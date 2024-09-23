@@ -115,9 +115,9 @@ switch ($_GET["op"])
 
 				$data[]=array(
 
-				"0"=>$proveedor['condicion_proveedor']== 1 ? '<botton class="btn btn-warning" onclick="mostrar('.$proveedor['id_proveedor'].')"><i class="fa fa-pencil"></i></botton>'.
+				"0"=>$proveedor['condicion_proveedor']== 1 ? '<botton class="btn btn-warning" onclick="mostrar('.$proveedor['id_proveedor'].')"><i class="fas fa-pencil-alt"></i></botton>'.
 
-				' <botton class="btn btn-danger" onclick="desactivar('.$proveedor['id_proveedor'].')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$proveedor['id_proveedor'].')"><i class="fa fa-pencil"></i></botton>'.
+				' <botton class="btn btn-danger" onclick="desactivar('.$proveedor['id_proveedor'].')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$proveedor['id_proveedor'].')"><i class="fas fa-pencil-alt"></i></botton>'.
 
 				' <botton class="btn btn-primary" onclick="activar('.$proveedor['id_proveedor'].')"><i class="fa fa-check"></i></botton>',
 

@@ -128,9 +128,9 @@ switch ($_GET["op"])
 
 			$data[]=array(
 
-			"0"=>($reg->condicio_usuario)?'<botton class="btn btn-warning" onclick="mostrar('.$reg->id_usuario.')"><i class="fa fa-pencil"></i></botton>'.
+			"0"=>($reg->condicio_usuario)?'<botton class="btn btn-warning" onclick="mostrar('.$reg->id_usuario.')"><i class="fas fa-pencil-alt"></i></botton>'.
 
-			' <botton class="btn btn-danger" onclick="desactivar('.$reg->id_usuario.')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$reg->id_usuario.')"><i class="fa fa-pencil"></i></botton>'.
+			' <botton class="btn btn-danger" onclick="desactivar('.$reg->id_usuario.')"><i class="fa fa-close"></i></botton>':'<botton class="btn btn-warning" onclick="mostrar('.$reg->id_usuario.')"><i class="fas fa-pencil-alt"></i></botton>'.
 
 			' <botton class="btn btn-primary" onclick="activar('.$reg->id_usuario.')"><i class="fa fa-check"></i></botton>',
 
