@@ -85,7 +85,7 @@ else {
                   <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <label>Comprobante (*):</label>
                     <div class="input-group">
-                      <input type="file" class="form-control" aria-label="..." accept=".pdf, .jpeg, .jpg, .png">
+                      <input type="file" class="form-control" aria-label="..." accept=".pdf, .jpeg, .jpg, .png" id="comprobante">
                     </div><!-- /input-group -->
                   </div>
 

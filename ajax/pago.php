@@ -27,6 +27,7 @@ $fecha_pago=isset($_POST["fecha_pago"])? limpiarCadena($_POST["fecha_pago"]):"";
 $monto_pago=isset($_POST["monto_pago"])? limpiarCadena($_POST["monto_pago"]):"";
 $metodo_pago=isset($_POST["metodo_pago"])? limpiarCadena($_POST["metodo_pago"]):"";
 $email_pago=isset($_POST["email_pago"])? limpiarCadena($_POST["email_pago"]):"";
+$id_usuario = isset($_POST["id_usuario"]) ? limpiarCadena($_POST["id_usuario"]) : "";
 
 switch ($_GET["op"]){
 	case 'guardaryeditar' :
@@ -37,7 +38,8 @@ switch ($_GET["op"]){
 			$monto_pago,
 			$metodo_pago,
 			$notas_evento,
-			$email_pago
+			$email_pago,
+			$id_usuario
 		);
 			echo $respuesta ? "Cobro registrado" : "El cobro no se pudo registrar";
 		}else{

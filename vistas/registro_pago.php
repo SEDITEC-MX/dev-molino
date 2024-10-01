@@ -42,6 +42,8 @@ else {
                 <!-- Solicitamos id del evento -->
                 <input type="hidden" name="id_pago" id="id_pago">
                 <input type="hidden" name="estado_evento" id="estado_evento">
+                <input type="hidden" id="id_usuario"
+                    data-id-usuario="<?php echo $_SESSION['id_usuario']; ?>" value="<?php echo $_SESSION['id_usuario']; ?>" />
                 <!-- Solicitamos evento -->
                 <div class="form-group row-fluid col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <!-- <label>Seleccionar evento (*):</label> -->

@@ -100,7 +100,6 @@ switch ($_GET["op"]) {
 		break;
 
 	//case 'listar':
-
 	case 'listarEventos':
 		$listaEventos = $registro_pago->listarNombreEventos();
 		$contador = 0;
@@ -295,7 +294,7 @@ switch ($_GET["op"]) {
 
 	case 'registrar_caja':
 		$correo = "julio.garces@outlook.com";
-		$respuesta = $registro_pago->insertar(
+		$respuesta = $registro_pago->insertarCaja(
 			$id_evento,
 			$id_proveedor,
 			$fecha_pago,

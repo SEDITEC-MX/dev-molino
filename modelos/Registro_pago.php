@@ -35,14 +35,52 @@ email_pago varchar(200)
 		$id_usuario
 	)
 	{
-		$arregloDatos = array($id_evento, $id_proveedor, $fecha_pago, $monto_pago, 
-			$metodo_pago,  $email_pago, $notas_pago, $id_categoria_servicio, $id_usuario);
+		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
+		email_pago, notas_pago, id_categoria_servicio,id_usuario) 
+		VALUES (
+		'$id_evento', '$id_proveedor', '$fecha_pago', '$monto_pago', 
+			'$metodo_pago', '$email_pago', '$notas_pago', '$id_categoria_servicio', '$id_usuario'
+		)";
+
+		return ejecutarConsulta($sql);
+
+	}
+
+	public function insertarCaja(
+		$id_evento,
+		$id_proveedor,
+		$fecha_pago,
+		$monto_pago,
+		$metodo_pago,
+		$email_pago,
+		$notas_pago,
+		$id_categoria_servicio,
+		$id_usuario
+	)
+	{
 		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
 		email_pago, notas_pago, id_categoria_servicio, id_usuario) 
-		VALUES (?,?,?,?,?,?,?,?,?)";
+		VALUES (
+		'$id_evento', '$id_proveedor', '$fecha_pago', '$monto_pago', 
+			'$metodo_pago',  '$email_pago', '$notas_pago', '$id_categoria_servicio', '$id_usuario'
+		)";
 
-		return ejecutarConsulta($sql, $arregloDatos);
+		$id_pago_new = ejecutarConsulta_retornarID($sql);
 
+		$nombre_archivo = 'prueba';
+
+		$sql_comprobante = "INSERT INTO archivos (
+							nombreArchivo, 
+							categoriaArchivo, 
+							fechaSubida, 
+							id_pago
+							) VALUES (
+							'$nombre_archivo',
+							'comprobante',
+							'$fecha_pago',
+							'$id_pago_new')";
+		
+		return ejecutarConsulta($sql_comprobante);
 	}
 
 
@@ -126,8 +164,6 @@ email_pago varchar(200)
 		return ejecutarConsulta($sql);
 	}
 
-
-
 	// Listar nombre eventos
 	public function listarNombreEventos()
 	{
@@ -146,7 +182,6 @@ email_pago varchar(200)
 		WHERE condicion_proveedor = 1";
 		return ejecutarSelect($sql);
 	}
-		
 
 	// Listar pagos
 	public function listarPagos($id_evento)
@@ -167,17 +202,16 @@ email_pago varchar(200)
 	{
 		$arregloDatos = array($id_usuario);
 		$sql="SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, evento.nombre_evento, pagos.metodo_pago, 
-		pagos.email_pago, pagos.notas_pago, pagos.status_pago, proveedores.nombre_proveedor, 
+		pagos.email_pago, pagos.notas_pago, status_pago, proveedores.nombre_proveedor, 
 		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
 		FROM pagos
 		INNER JOIN proveedores ON pagos.id_proveedor = proveedores.id_proveedor
 		LEFT JOIN categoria_servicio AS servicio ON pagos.id_categoria_servicio = servicio.id_categoria_servicio
 		LEFT JOIN evento AS evento ON pagos.id_evento = evento.id_evento   
-		WHERE id_usuario = ? 
+		WHERE metodo_pago = 'EF' AND id_usuario = ? 
 		ORDER BY TIMESTAMP(fecha_pago)";
 		return ejecutarSelect($sql, $arregloDatos);
 	}
-
 
 	public function ingresocabecera($id_evento)
 	{

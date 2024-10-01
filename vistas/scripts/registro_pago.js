@@ -367,8 +367,10 @@ function registrar_pago(e)
 	$("#formularioregistros .loading-gif").removeClass("hidden");
 	var formData = new FormData($("#formulario")[0]);
 	var nombre_evento = $("#id_evento option:selected").text();
+	var id_usuario = document.getElementById("id_usuario").dataset.idUsuario;
 	formData.append('nombre_proveedor', $('#id_proveedor option:selected').text());
 	formData.append('nombre_evento', nombre_evento);
+	formData.append("id_usuario", id_usuario);
 	
 	$.ajax({
 		url: "../ajax/registro_pago.php?op=registrar_pago",
