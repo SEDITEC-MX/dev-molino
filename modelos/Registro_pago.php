@@ -167,7 +167,7 @@ email_pago varchar(200)
 	{
 		$arregloDatos = array($id_usuario);
 		$sql="SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, evento.nombre_evento, pagos.metodo_pago, 
-		pagos.email_pago, pagos.notas_pago, proveedores.nombre_proveedor, 
+		pagos.email_pago, pagos.notas_pago, pagos.status_pago, proveedores.nombre_proveedor, 
 		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
 		FROM pagos
 		INNER JOIN proveedores ON pagos.id_proveedor = proveedores.id_proveedor

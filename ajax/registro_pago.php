@@ -37,6 +37,8 @@ $nombre_evento_seleccionado = isset($_POST["nombre_evento"]) ? limpiarCadena($_P
 $id_usuario = isset($_POST["id_usuario"]) ? limpiarCadena($_POST["id_usuario"]) : "";
 $nombre_evento = isset($_POST["nombre_evento"]) ? limpiarCadena($_POST["nombre_evento"]) : "";
 
+
+
 switch ($_GET["op"]) {
 	case 'registrar_pago':
 		$respuesta = $registro_pago->insertar(
@@ -332,9 +334,7 @@ switch ($_GET["op"]) {
 		break;
 	
 		case 'listarPagosCaja':
-			//$id_usuario = 1;
 			$id_usuario = $_POST['id_usuario'];
-			//echo $id_usuario;
 			$listaPagos = $registro_pago->listarPagosCaja($id_usuario);
 			$cont = 0;
 			$total = 0;
@@ -367,6 +367,7 @@ switch ($_GET["op"]) {
 					$notas_pago = $pago['notas_pago'];
 					$nombre_categoria_servicio = $pago['nombre_categoria_servicio'];
 					$id_categoria_servicio = $pago['id_categoria_servicio'];
+					$status_pago = $pago['status_pago'];
 					$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);
 	
 					if (isset($_GET['variacion'])) {
@@ -378,7 +379,8 @@ switch ($_GET["op"]) {
 							"3" => $nombre_evento,
 							"4" => $nombre_proveedor,
 							"5" => $notas_pago,
-							"6" => "boton comprobante"
+							"6" => "boton comprobante",
+							"7" => $status_pago
 						);
 					} else {
 						$data[] = array(
@@ -390,8 +392,8 @@ switch ($_GET["op"]) {
 							"3" => $nombre_evento,
 							"4" => $nombre_proveedor,
 							"5" => $notas_pago,
-							"6" => "boton comprobante"
-	
+							"6" => "boton comprobante",
+							"7" => $status_pago
 						);
 					}
 				}
