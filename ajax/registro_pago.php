@@ -36,7 +36,7 @@ $id_categoria_servicio = isset($_POST["id_categoria_servicio"]) ? limpiarCadena(
 $nombre_evento_seleccionado = isset($_POST["nombre_evento"]) ? limpiarCadena($_POST["nombre_evento"]) : "";
 $id_usuario = isset($_POST["id_usuario"]) ? limpiarCadena($_POST["id_usuario"]) : "";
 $nombre_evento = isset($_POST["nombre_evento"]) ? limpiarCadena($_POST["nombre_evento"]) : "";
-
+$archivo = isset($_FILES['archivo']);
 
 
 switch ($_GET["op"]) {
@@ -293,6 +293,18 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'registrar_caja':
+		$archivo = $_FILES['archivo'];
+		$nombreArchivo = $archivo['name'];
+		$tipoArchivo = $archivo['type'];
+		$tamanoArchivo = $archivo['size'];
+		$tmpArchivo = $archivo['tmp_name'];
+		// Verificar si el archivo es válido
+		if ($tamanoArchivo > 0) {
+			// Mover el archivo a una carpeta específica
+			$rutaArchivo = '../archivos/comprobante/' . $nombreArchivo;
+			move_uploaded_file($tmpArchivo, $rutaArchivo);
+		}
+		
 		$correo = "julio.garces@outlook.com";
 		$respuesta = $registro_pago->insertarCaja(
 			$id_evento,
@@ -303,8 +315,10 @@ switch ($_GET["op"]) {
 			$correo,
 			$notas_pago,
 			$id_categoria_servicio,
-			$id_usuario
+			$id_usuario,
+			$archivo
 		);
+
 		$correo = new Mail();
 		$aux = new FuncionesComunes();
 		$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);

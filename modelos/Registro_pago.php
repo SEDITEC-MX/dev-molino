@@ -55,7 +55,8 @@ email_pago varchar(200)
 		$email_pago,
 		$notas_pago,
 		$id_categoria_servicio,
-		$id_usuario
+		$id_usuario,
+		$archivo
 	)
 	{
 		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
@@ -67,7 +68,10 @@ email_pago varchar(200)
 
 		$id_pago_new = ejecutarConsulta_retornarID($sql);
 
-		$nombre_archivo = 'prueba';
+		$nombreArchivo = $archivo['name'];
+		$tmpArchivo = $archivo['tmp_name'];
+		$rutaArchivo = '../archivos/' . $nombreArchivo;
+		move_uploaded_file($tmpArchivo, $rutaArchivo);
 
 		$sql_comprobante = "INSERT INTO archivos (
 							nombreArchivo, 
@@ -75,7 +79,7 @@ email_pago varchar(200)
 							fechaSubida, 
 							id_pago
 							) VALUES (
-							'$nombre_archivo',
+							'$nombreArchivo',
 							'comprobante',
 							'$fecha_pago',
 							'$id_pago_new')";
