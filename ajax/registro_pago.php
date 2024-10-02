@@ -99,7 +99,7 @@ switch ($_GET["op"]) {
 		echo $resultado;
 		break;
 
-	//case 'listar':
+		//case 'listar':
 	case 'listarEventos':
 		$listaEventos = $registro_pago->listarNombreEventos();
 		$contador = 0;
@@ -304,7 +304,7 @@ switch ($_GET["op"]) {
 			$rutaArchivo = '../archivos/comprobante/' . $nombreArchivo;
 			move_uploaded_file($tmpArchivo, $rutaArchivo);
 		}
-		
+
 		$correo = "julio.garces@outlook.com";
 		$respuesta = $registro_pago->insertarCaja(
 			$id_evento,
@@ -345,78 +345,78 @@ switch ($_GET["op"]) {
 		}
 		echo $resultado;
 		break;
-	
-		case 'listarPagosCaja':
-			$id_usuario = $_POST['id_usuario'];
-			$listaPagos = $registro_pago->listarPagosCaja($id_usuario);
-			$cont = 0;
-			$total = 0;
-	
-			$data = array();
-			if (count($listaPagos) == 0) { //Si no hay historial de
-				// echo "<tr class='filas'>
-				// 		<td colspan='6'>No hay historial de cobros para este evento</td>
-				// 	 </tr>";
-				$data[] = array(
-					// "0" => "No hay historial de cobros para este evento",
-					// "1" => ""
-				);
-				$results = array(
-					"aaData" => []
-				);
-				echo json_encode($results);
-			} else {
-				$aux = new FuncionesComunes();
-				foreach ($listaPagos as $pago) {
-					$cont++;
-					$id_pago = $pago['id_pago'];
-					$fecha_pago = strstr($pago['fecha_pago'], ' ', true);
-					$monto_pago = $pago['monto_pago'];
-					$total += $pago['monto_pago'];
-					$nombre_evento  = $pago['nombre_evento'];
-					$nombre_proveedor = $pago['nombre_proveedor'];
-					$metodo_pago = $pago['metodo_pago'];
-					$email_pago = $pago['email_pago'];
-					$notas_pago = $pago['notas_pago'];
-					$nombre_categoria_servicio = $pago['nombre_categoria_servicio'];
-					$id_categoria_servicio = $pago['id_categoria_servicio'];
-					$status_pago = $pago['status_pago'];
-					$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);
-	
-					if (isset($_GET['variacion'])) {
-						$data[] = array(
-							"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
-							),
-							"1" => $fecha_pago,
-							"2" => "$ " . number_format($monto_pago, 2),
-							"3" => $nombre_evento,
-							"4" => $nombre_proveedor,
-							"5" => $notas_pago,
-							"6" => "boton comprobante",
-							"7" => $status_pago
-						);
-					} else {
-						$data[] = array(
-	
-							"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
-							),
-							"1" => $fecha_pago,
-							"2" => "$ " . number_format($monto_pago, 2),
-							"3" => $nombre_evento,
-							"4" => $nombre_proveedor,
-							"5" => $notas_pago,
-							"6" => "boton comprobante",
-							"7" => $status_pago
-						);
-					}
+
+	case 'listarPagosCaja':
+		$id_usuario = $_POST['id_usuario'];
+		$listaPagos = $registro_pago->listarPagosCaja($id_usuario);
+		$cont = 0;
+		$total = 0;
+
+		$data = array();
+		if (count($listaPagos) == 0) { //Si no hay historial de
+			// echo "<tr class='filas'>
+			// 		<td colspan='6'>No hay historial de cobros para este evento</td>
+			// 	 </tr>";
+			$data[] = array(
+				// "0" => "No hay historial de cobros para este evento",
+				// "1" => ""
+			);
+			$results = array(
+				"aaData" => []
+			);
+			echo json_encode($results);
+		} else {
+			$aux = new FuncionesComunes();
+			foreach ($listaPagos as $pago) {
+				$cont++;
+				$id_pago = $pago['id_pago'];
+				$fecha_pago = strstr($pago['fecha_pago'], ' ', true);
+				$monto_pago = $pago['monto_pago'];
+				$total += $pago['monto_pago'];
+				$nombre_evento  = $pago['nombre_evento'];
+				$nombre_proveedor = $pago['nombre_proveedor'];
+				$metodo_pago = $pago['metodo_pago'];
+				$email_pago = $pago['email_pago'];
+				$notas_pago = $pago['notas_pago'];
+				$nombre_categoria_servicio = $pago['nombre_categoria_servicio'];
+				$id_categoria_servicio = $pago['id_categoria_servicio'];
+				$status_pago = $pago['status_pago'];
+				$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);
+
+				if (isset($_GET['variacion'])) {
+					$data[] = array(
+						"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
+						),
+						"1" => $fecha_pago,
+						"2" => "$ " . number_format($monto_pago, 2),
+						"3" => $nombre_evento,
+						"4" => $nombre_proveedor,
+						"5" => $notas_pago,
+						"6" => "boton comprobante",
+						"7" => $status_pago
+					);
+				} else {
+					$data[] = array(
+
+						"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
+						),
+						"1" => $fecha_pago,
+						"2" => "$ " . number_format($monto_pago, 2),
+						"3" => $nombre_evento,
+						"4" => $nombre_proveedor,
+						"5" => $notas_pago,
+						"6" => "boton comprobante",
+						"7" => $status_pago
+					);
 				}
-				$results = array(
-					"sEcho" => 1,
-					"iTotalRecords" => count($data),
-					"iTotalDisplayRecords" => count($data),
-					"aaData" => $data
-				);
-				echo json_encode($results);
 			}
-			break;
+			$results = array(
+				"sEcho" => 1,
+				"iTotalRecords" => count($data),
+				"iTotalDisplayRecords" => count($data),
+				"aaData" => $data
+			);
+			echo json_encode($results);
+		}
+		break;
 }
