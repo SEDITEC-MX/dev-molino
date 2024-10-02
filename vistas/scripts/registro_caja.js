@@ -2,7 +2,6 @@ var tabla;
 
 // Inicio Función de inicio
 function init() {
-
   // Guardar formulario
   $("#formulario").on("submit", function (e) {
     registrar_caja(e);
@@ -230,8 +229,7 @@ function init() {
           { className: "evento", evento: [3] },
           { className: "nombre_proveedor", targets: [4] },
           { className: "notas", targets: [5] },
-          { className: "comprobante", targets: [6] },
-		  { className: "status", targets: [7] }
+          { className: "status", targets: [6] },
         ],
         createdRow: function (row, data, dataIndex) {
           let id = data[8];

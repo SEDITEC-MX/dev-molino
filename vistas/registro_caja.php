@@ -121,7 +121,6 @@ else {
                     <th style="text-align: center; vertical-align:middle;">Evento</th>
                     <th style="text-align: center; vertical-align:middle;">Proveedor</th>
                     <th style="text-align: center; vertical-align:middle;" class="hide-on-small">Notas</th>
-                    <th style="text-align: center; vertical-align:middle;">Comprobante</th>
                     <th style="text-align: center; vertical-align:middle;">Status</th>
                   </thead>
 
@@ -135,7 +134,6 @@ else {
                     <th style="text-align: center; vertical-align:middle;">Evento</th>
                     <th style="text-align: center; vertical-align:middle;">Proveedor</th>
                     <th style="text-align: center; vertical-align:middle;" class="hide-on-small">Notas</th>
-                    <th style="text-align: center; vertical-align:middle;">Comprobante</th>
                     <th style="text-align: center; vertical-align:middle;">Status</th>
                   </tfoot>
                 </table>

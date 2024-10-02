@@ -385,28 +385,27 @@ switch ($_GET["op"]) {
 
 				if (isset($_GET['variacion'])) {
 					$data[] = array(
-						"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
-						),
+						"0" => ('<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fas fa-close"></i></button>' .
+        '<button class="btn btn-primary eliminar" style="display: inline-block; margin-left: 5px;"><i class="fa fa-search fa-xs"></i></button>'
+       ),
 						"1" => $fecha_pago,
 						"2" => "$ " . number_format($monto_pago, 2),
 						"3" => $nombre_evento,
 						"4" => $nombre_proveedor,
 						"5" => $notas_pago,
-						"6" => "boton comprobante",
-						"7" => $status_pago
+						"6" => $status_pago
 					);
 				} else {
 					$data[] = array(
-
-						"0" => ('<button class="btn btn-danger eliminar">Borrar Pago</button>'
-						),
+						"0" => ('<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fas fa-close"></i></button>' .
+        '<button class="btn btn-primary eliminar" style="display: inline-block; margin-left: 5px;"><i class="fa fa-search fa-xs"></i></button>'
+       ),
 						"1" => $fecha_pago,
 						"2" => "$ " . number_format($monto_pago, 2),
 						"3" => $nombre_evento,
 						"4" => $nombre_proveedor,
 						"5" => $notas_pago,
-						"6" => "boton comprobante",
-						"7" => $status_pago
+						"6" => $status_pago
 					);
 				}
 			}

@@ -1,60 +1,36 @@
 var tabla;
 
-
-
 // Inicio Función de inicio
 
-function init()
+function init() {
+  //Ocultamos el formulario
 
-{
+  mostrarform(false);
 
-	//Ocultamos el formulario
+  //Llamamos a la función listar
 
-	mostrarform(false);
+  listar();
 
-	
+  listarTablaAExportar();
 
-	//Llamamos a la función listar
+  //Al dar clic en el botón guardar llamamos a guardaryeditar con la información en e
 
-	listar();
+  $("#formulario").on("submit", function (e) {
+    guardaryeditar(e);
+  });
 
-	listarTablaAExportar();
+  //Cargamos los items al select proveedor
 
-	
+  $.post("../ajax/evento.php?op=selectCategoria", function (r) {
+    $("#id_categoria_servicio").html(r);
 
-	//Al dar clic en el botón guardar llamamos a guardaryeditar con la información en e
+    $("#id_categoria_servicio").selectpicker("refresh");
+  });
 
-	$("#formulario").on("submit",function(e)
+  $("#mCompras").addClass("treeview active");
 
-	{
-
-		guardaryeditar(e);	
-
-	});
-
-
-
-	//Cargamos los items al select proveedor
-
-	$.post("../ajax/evento.php?op=selectCategoria", function(r){
-
-		$("#id_categoria_servicio").html(r);
-
-		$('#id_categoria_servicio').selectpicker('refresh');
-
-	});
-
-
-
-	$('#mCompras').addClass("treeview active");
-
-	$('#lIngresos').addClass("active");	
-
+  $("#lIngresos").addClass("active");
 }
-
-
-
-
 
 /*
 
@@ -76,698 +52,460 @@ email_cobro varchar(200)
 
 */
 
+function limpiar() {
+  $("#id_evento").val("");
 
+  $("#fecha_cobro").val("");
 
-function limpiar()
+  $("#monto_cobro").val("");
 
-{
+  $("#metodo_cobro").val("");
 
-	$("#id_evento").val("");
-
-	$("#fecha_cobro").val("");
-
-	$("#monto_cobro").val("");
-
-	$("#metodo_cobro").val("");
-
-	$("#email_cobro").val("");
-
+  $("#email_cobro").val("");
 }
 
+function mostrarform(flag) {
+  //limpiar();
 
+  if (flag) {
+    $("#listadoregistros").hide();
 
-function mostrarform(flag)
+    $("#formularioregistros").show();
 
-{
+    $("#btnagregar").hide();
 
-	//limpiar();
+    $("#boton_verde_agregar").hide();
 
-	if(flag)
+    listarServicios();
 
-	{
+    $("#guardar").hide();
 
-		$("#listadoregistros").hide();
+    $("#btnGuardar").show();
 
-		$("#formularioregistros").show();
+    $("#btnCancelar").show();
 
-		$("#btnagregar").hide();
+    detalles = 0;
 
-		$("#boton_verde_agregar").hide();
+    $("#btnAgregarArt").show();
 
-		listarServicios();
+    $("#abrirModal").show();
+  } else {
+    $("#listadoregistros").show();
 
-		$("#guardar").hide();
+    $("#formularioregistros").hide();
 
-		$("#btnGuardar").show();
+    $("#btnagregar").show();
 
-		$("#btnCancelar").show();
-
-		detalles=0;
-
-		$("#btnAgregarArt").show();
-
-		$("#abrirModal").show();
-
-		
-
-
-
-	}
-
-	else
-
-	{
-
-		$("#listadoregistros").show();
-
-		$("#formularioregistros").hide();
-
-		$("#btnagregar").show();
-
-		$("#boton_verde_agregar").show();
-
-	}
-
+    $("#boton_verde_agregar").show();
+  }
 }
 
+function cancelarform() {
+  limpiar();
 
-
-function cancelarform()
-
-{
-
-	limpiar();
-
-	mostrarform(false);
-
+  mostrarform(false);
 }
 
+function listar() {
+  tabla = $("#tbllistado")
+    .dataTable({
+      aProcessing: true, //Activamos el procesamiento del datatables
 
+      aServerSide: true, //Paginación y filtrado realizados por el servidor
 
-function listar()
+      dom: "Bfrtip", //Definimos los elementos del control de tabla
 
-{
+      buttons: ["copyHtml5", "excelHtml5", "csvHtml5", "pdf", "pageLength"],
 
-	
+      language: {
+        buttons: {
+          pageLength: {
+            _: "Mostrar %d filas",
 
-	tabla=$('#tbllistado').dataTable(
+            "-1": "Todos",
+          },
+        },
+      },
 
-	{
+      pageLength: 30,
 
-		"aProcessing": true,//Activamos el procesamiento del datatables
+      aLengthMenu: [
+        [10, 20, 50, 100, -1],
+        [10, 20, 50, 100, "Todos"],
+      ],
 
-	    "aServerSide": true,//Paginación y filtrado realizados por el servidor
+      ajax: {
+        url: "../ajax/cobro.php?op=listar",
 
-	    dom: 'Bfrtip',//Definimos los elementos del control de tabla
+        type: "get",
 
-		
+        dataType: "json",
 
-	    buttons: [		          
+        error: function (e) {
+          console.log(e.responseText);
+        },
+      },
 
-		            'copyHtml5',
+      bDestroy: true,
 
-		            'excelHtml5',
+      iDisplayLength: 100, //Paginación
 
-		            'csvHtml5',
-
-		            'pdf',
-
-		            'pageLength'
-
-		        ],
-
-		 language: {
-
-	      buttons: {
-
-	        pageLength: {
-
-	   	    _: "Mostrar %d filas",
-
-	       '-1': "Todos"
-
-	      }
-
-	    },
-
-	   },
-
-	   'pageLength': 30,
-
-		'aLengthMenu': [[ 10, 20, 50, 100 ,-1],[10,20,50,100,"Todos"]],
-
-		"ajax":
-
-				{
-
-					url: '../ajax/cobro.php?op=listar',
-
-					type : "get",
-
-					dataType : "json",						
-
-					error: function(e){
-
-						console.log(e.responseText);	
-
-					}
-
-				},
-
-		"bDestroy": true,
-
-		"iDisplayLength": 100,//Paginación
-
-	    "order": [[ 0, "desc" ]]//Ordenar (columna,orden)
-
-	}).DataTable();
-
+      order: [[0, "desc"]], //Ordenar (columna,orden)
+    })
+    .DataTable();
 }
 
+function listarTablaAExportar() {
+  tabla = $("#asd")
+    .dataTable({
+      aProcessing: true, //Activamos el procesamiento del datatables
 
+      aServerSide: true, //Paginación y filtrado realizados por el servidor
 
-function listarTablaAExportar()
+      dom: "Bfrtip", //Definimos los elementos del control de tabla
 
-{
+      buttons: ["copyHtml5", "excelHtml5", "csvHtml5", "pdf"],
 
+      ajax: {
+        url: "../ajax/cobro.php?op=listar",
 
+        type: "get",
 
-	tabla=$('#asd').dataTable(
+        dataType: "json",
 
-	{
+        error: function (e) {
+          console.log(e.responseText);
+        },
+      },
 
-		"aProcessing": true,//Activamos el procesamiento del datatables
+      bDestroy: true,
 
-	    "aServerSide": true,//Paginación y filtrado realizados por el servidor
+      iDisplayLength: 100, //Paginación
 
-	    dom: 'Bfrtip',//Definimos los elementos del control de tabla
-
-		
-
-	    buttons: [		          
-
-		            'copyHtml5',
-
-		            'excelHtml5',
-
-		            'csvHtml5',
-
-		            'pdf'
-
-		        ],
-
-		"ajax":
-
-				{
-
-					url: '../ajax/cobro.php?op=listar',
-
-					type : "get",
-
-					dataType : "json",						
-
-					error: function(e){
-
-						console.log(e.responseText);	
-
-					}
-
-				},
-
-		"bDestroy": true,
-
-		"iDisplayLength": 100,//Paginación
-
-	    "order": [[ 0, "desc" ]]//Ordenar (columna,orden)
-
-	}).DataTable();
-
+      order: [[0, "desc"]], //Ordenar (columna,orden)
+    })
+    .DataTable();
 }
 
+function listarServicios() {
+  tabla = $("#tblarticulos")
+    .dataTable({
+      aProcessing: true, //Activamos el procesamiento del datatables
 
+      aServerSide: true, //Paginación y filtrado realizados por el servidor
 
-function listarServicios()
+      dom: "Bfrtip", //Definimos los elementos del control de tabla
 
-{
+      buttons: [],
 
-	tabla=$('#tblarticulos').dataTable(
+      ajax: {
+        url: "../ajax/evento.php?op=listarServicios",
 
-	{
+        type: "get",
 
-		"aProcessing": true,//Activamos el procesamiento del datatables
+        dataType: "json",
 
-	    "aServerSide": true,//Paginación y filtrado realizados por el servidor
+        error: function (e) {
+          console.log(e.responseText);
+        },
+      },
 
-	    dom: 'Bfrtip',//Definimos los elementos del control de tabla
+      bDestroy: true,
 
-	    buttons: [		          
+      iDisplayLength: 10, //Paginación
 
-		           
-
-		        ],
-
-		"ajax":
-
-				{
-
-					url: '../ajax/evento.php?op=listarServicios',
-
-					type : "get",
-
-					dataType : "json",						
-
-					error: function(e){
-
-						console.log(e.responseText);	
-
-					}
-
-				},
-
-		"bDestroy": true,
-
-		"iDisplayLength": 10,//Paginación
-
-	    "order": [[ 0, "desc" ]]//Ordenar (columna,orden)
-
-	}).DataTable();
-
+      order: [[0, "desc"]], //Ordenar (columna,orden)
+    })
+    .DataTable();
 }
 
+function guardaryeditar(e) {
+  modificarSubototales();
 
+  e.preventDefault(); //No se activará la acción predeterminada del evento
 
-function guardaryeditar(e)
+  //$("#btnGuardar").prop("disabled",true);
 
-{
+  var formData = new FormData($("#formulario")[0]);
 
-	modificarSubototales();
+  $.ajax({
+    url: "../ajax/evento.php?op=guardaryeditar",
 
-	
+    type: "POST",
 
-	e.preventDefault(); //No se activará la acción predeterminada del evento
+    data: formData,
 
-	//$("#btnGuardar").prop("disabled",true);
+    contentType: false,
 
-	var formData = new FormData($("#formulario")[0]);
+    processData: false,
 
+    success: function (datos) {
+      bootbox.alert(datos);
 
+      mostrarform(false);
 
-	$.ajax({
+      listar();
+    },
+  });
 
-		url: "../ajax/evento.php?op=guardaryeditar",
-
-	    type: "POST",
-
-	    data: formData,
-
-	    contentType: false,
-
-	    processData: false,
-
-
-
-	    success: function(datos)
-
-	    {                    
-
-	          bootbox.alert(datos);	          
-
-	          mostrarform(false);
-
-	          listar();
-
-	    }
-
-
-
-	});
-
-	limpiar();
-
+  limpiar();
 }
 
+function mostrar(id_evento) {
+  $.post(
+    "../ajax/evento.php?op=mostrar",
+    { id_evento: id_evento },
+    function (data, status) {
+      data = JSON.parse(data);
 
+      mostrarform(true);
 
-function mostrar(id_evento)
+      $("#id_evento").val(data.id_evento);
 
-{
-	$.post("../ajax/evento.php?op=mostrar",{id_evento : id_evento}, function(data, status)
-	
-	{
+      $("#estado_evento").val(data.estado_evento);
 
-		data = JSON.parse(data);		
+      $("#fecha_evento").val(data.fecha_evento);
 
-		mostrarform(true);
+      $("#tipo_evento").val(data.tipo_evento);
 
+      $("#tipo_evento").selectpicker("refresh");
 
+      $("#nombre_evento").val(data.nombre_evento);
 
-		$("#id_evento").val(data.id_evento);
+      $("#invitados_evento").val(data.invitados_evento);
 
-		$("#estado_evento").val(data.estado_evento);
+      $("#cotizacion_evento").val(data.cotizacion_evento);
 
-		$("#fecha_evento").val(data.fecha_evento);
+      $("#cotizacion_evento").selectpicker("refresh");
 
-		$("#tipo_evento").val(data.tipo_evento);
+      $("#notas_evento").val(data.notas_evento);
 
-		$('#tipo_evento').selectpicker('refresh');
+      $("#total_evento").val(data.total_evento);
 
-		$("#nombre_evento").val(data.nombre_evento);
+      $("#btnGuardar").show();
 
-		$("#invitados_evento").val(data.invitados_evento);
+      $("#abrirModal").show();
+    }
+  );
 
-		$("#cotizacion_evento").val(data.cotizacion_evento);
+  // $.post("../ajax/cobro.php?op=listarDetalle&id="+id_evento,function(r)
 
-		$('#cotizacion_evento').selectpicker('refresh');
+  // {
 
-		$("#notas_evento").val(data.notas_evento);
+  // 	// $("#detalles").html(r);
 
-		$("#total_evento").val(data.total_evento);
+  // 	$("#detalles").html(r);
 
-		$("#btnGuardar").show();
+  // });
 
-		$("#abrirModal").show();
+  tabla = $("#detalles")
+    .dataTable({
+      aProcessing: true, //Activamos el procesamiento del datatables
 
- 	});
+      aServerSide: true, //Paginación y filtrado realizados por el servidor
 
+      dom: "Bfrtip", //Definimos los elementos del control de tabla
 
+      buttons: ["copyHtml5", "excelHtml5", "csvHtml5", "pdf"],
 
-	 // $.post("../ajax/cobro.php?op=listarDetalle&id="+id_evento,function(r)
+      ajax: {
+        url: "../ajax/cobro.php?op=listarDetalle&id=" + id_evento,
 
-	 // {
+        type: "get",
 
-		// 	// $("#detalles").html(r);
+        dataType: "json",
 
-		// 	$("#detalles").html(r);
+        error: function (e) {
+          console.log(e.responseText);
+        },
+      },
 
-	 // });
+      bDestroy: true,
 
+      iDisplayLength: 10, //Paginación
 
+      order: [[0, "desc"]], //Ordenar (columna,orden)
 
-	 tabla=$('#detalles').dataTable(
-
-		{
-
-			"aProcessing": true,//Activamos el procesamiento del datatables
-
-			"aServerSide": true,//Paginación y filtrado realizados por el servidor
-
-			dom: 'Bfrtip',//Definimos los elementos del control de tabla
-
-			buttons: [		          
-
-			'copyHtml5',
-
-			'excelHtml5',
-
-			'csvHtml5',
-
-			'pdf'
-
-      	],
-
-			"ajax":
-
-				{
-
-					url: "../ajax/cobro.php?op=listarDetalle&id="+id_evento,
-
-					type : "get",
-
-					dataType : "json",						
-
-					error: function(e){
-
-						console.log(e.responseText);	
-
-					}
-
-				},
-
-			"bDestroy": true,
-
-			"iDisplayLength": 10,//Paginación
-
-		    "order": [[ 0, "desc" ]], //Ordenar (columna,orden)
-			
-			"initComplete": function( settings, json ) {
-				if (json['iTotalDisplayRecords'] > 0){
-					let tamanio = json['aaData'].length - 1;
-					let datos = json['aaData'][tamanio];
-					let total = datos[5];
-					$("#total").text(total)
-				}
-			 }
-
-		}).DataTable();
-
-
-
-}
-
-
-
-function activar(id_evento)
-
-{
-
-	bootbox.confirm("¿Está seguro de regresar a programado el evento?", function(result){
-
-		if(result)
-
-        {
-
-        	$.post("../ajax/evento.php?op=activar", {id_evento : id_evento}, function(e){
-
-        		bootbox.alert(e);
-
-	            tabla.ajax.reload();
-
-				location.reload();
-
-        	});	
-
+      initComplete: function (settings, json) {
+        if (json["iTotalDisplayRecords"] > 0) {
+          let tamanio = json["aaData"].length - 1;
+          let datos = json["aaData"][tamanio];
+          let total = datos[5];
+          $("#total").text(total);
         }
-
-	})
-
+      },
+    })
+    .DataTable();
 }
 
+function activar(id_evento) {
+  bootbox.confirm(
+    "¿Está seguro de regresar a programado el evento?",
+    function (result) {
+      if (result) {
+        $.post(
+          "../ajax/evento.php?op=activar",
+          { id_evento: id_evento },
+          function (e) {
+            bootbox.alert(e);
 
+            tabla.ajax.reload();
 
-function anular(id_evento)
+            location.reload();
+          }
+        );
+      }
+    }
+  );
+}
 
-{
+function anular(id_evento) {
+  bootbox.confirm("¿Está seguro de finalizar el evento?", function (result) {
+    if (result) {
+      $.post(
+        "../ajax/evento.php?op=anular",
+        { id_evento: id_evento },
+        function (e) {
+          bootbox.alert(e);
 
-	bootbox.confirm("¿Está seguro de finalizar el evento?", function(result){
+          tabla.ajax.reload();
 
-		if(result)
-
-        {
-
-        	$.post("../ajax/evento.php?op=anular", {id_evento : id_evento}, function(e){
-
-        		bootbox.alert(e);
-
-	            tabla.ajax.reload();
-
-				location.reload();
-
-        	});	
-
+          location.reload();
         }
-
-	})
-
+      );
+    }
+  });
 }
-
-
 
 //Declaración de variables necesarias para trabajar con las compras y
 
 //sus detalles
 
-var cont=0;
+var cont = 0;
 
-var detalles=0;
+var detalles = 0;
 
 //$("#guardar").hide();
 
 $("#btnGuardar").show();
 
+function agregarDetalle(id_servicio, nombre_servicio) {
+  var cantidad_detalle_evento = 1;
 
+  var precio_detalle_evento = 1;
 
-function agregarDetalle(id_servicio,nombre_servicio)
+  if (id_servicio != "") {
+    var subtotal = cantidad_detalle_evento * precio_detalle_evento;
 
-  {
+    var fila =
+      '<tr class="filas" id="fila' +
+      cont +
+      '">' +
+      '<td><button type="button" class="btn btn-danger" onclick="eliminarDetalle(' +
+      cont +
+      ')">X</button></td>' +
+      '<td><input type="hidden" name="id_cobro[]" value="' +
+      id_cobro +
+      '">' +
+      fecha_cobro +
+      "</td>" +
+      '<td><input type="number" name="metodo_cobro[]" id="metodo_cobro[]" value="' +
+      metodo_cobro +
+      '"></td>' +
+      '<td><input type="email" name="monto_cobro[]" id="monto_cobro[]" value="' +
+      monto_cobro +
+      '"></td>' +
+      '<td><input type="email" name="email_cobro[]" id="email_cobro[]" value="' +
+      email_cobro +
+      '"></td>' +
+      '<td><span name="subtotal" id="subtotal' +
+      cont +
+      '">' +
+      subtotal +
+      "</span></td>" +
+      '<td><button type="button" onclick="modificarSubototales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>' +
+      "</tr>";
 
-  	var cantidad_detalle_evento=1;
+    cont++;
 
-    var precio_detalle_evento=1;
+    detalles = detalles + 1;
 
-    
+    $("#detalles").append(fila);
 
-    if (id_servicio!="")
+    modificarSubototales();
+  } else {
+    alert("Error al ingresar el detalle, revisar los datos del servicio");
+  }
+}
 
-    {
+function modificarSubototales() {
+  var cant = document.getElementsByName("cantidad_detalle_evento[]");
 
-    	var subtotal=cantidad_detalle_evento*precio_detalle_evento;
+  var prec = document.getElementsByName("precio_detalle_evento[]");
 
-    	var fila='<tr class="filas" id="fila'+cont+'">'+
+  var sub = document.getElementsByName("subtotal");
 
-    	'<td><button type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+  for (var i = 0; i < cant.length; i++) {
+    var inpC = cant[i];
 
-    	'<td><input type="hidden" name="id_cobro[]" value="'+id_cobro+'">'+fecha_cobro+'</td>'+
+    var inpP = prec[i];
 
-    	'<td><input type="number" name="metodo_cobro[]" id="metodo_cobro[]" value="'+metodo_cobro+'"></td>'+
+    var inpS = sub[i];
 
-    	'<td><input type="email" name="monto_cobro[]" id="monto_cobro[]" value="'+monto_cobro+'"></td>'+
+    inpS.value = inpC.value * inpP.value;
 
-    	'<td><input type="email" name="email_cobro[]" id="email_cobro[]" value="'+email_cobro+'"></td>'+
-
-    	'<td><span name="subtotal" id="subtotal'+cont+'">'+subtotal+'</span></td>'+
-
-    	'<td><button type="button" onclick="modificarSubototales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
-
-    	'</tr>';
-
-    	cont++;
-
-    	detalles=detalles+1;
-
-    	$('#detalles').append(fila);
-
-    	modificarSubototales();
-
-    }
-
-    else
-
-    {
-
-    	alert("Error al ingresar el detalle, revisar los datos del servicio");
-
-    }
-
+    document.getElementsByName("subtotal")[i].innerHTML = inpS.value;
   }
 
+  calcularTotales();
+}
 
+function calcularTotales() {
+  var sub = document.getElementsByName("subtotal");
 
-  function modificarSubototales()
+  var total = 0.0;
 
-  {
-
-  	var cant = document.getElementsByName("cantidad_detalle_evento[]");
-
-    var prec = document.getElementsByName("precio_detalle_evento[]");
-
-    var sub = document.getElementsByName("subtotal");
-
-
-
-    for (var i = 0; i <cant.length; i++) {
-
-    	var inpC=cant[i];
-
-    	var inpP=prec[i];
-
-    	var inpS=sub[i];
-
-
-
-    	inpS.value=inpC.value * inpP.value;
-
-    	document.getElementsByName("subtotal")[i].innerHTML = inpS.value;
-
-    }
-
-    calcularTotales();
-
-
-
+  for (var i = 0; i < sub.length; i++) {
+    total += document.getElementsByName("subtotal")[i].value;
   }
 
+  $("#total").html("$ " + total);
 
+  $("#total_evento").val(total);
 
+  evaluar();
+}
 
+function evaluar() {
+  if (detalles > 0) {
+    $("#btnGuardar").show();
+  } else {
+    $("#btnGuardar").show();
 
-  function calcularTotales(){
-
-  	var sub = document.getElementsByName("subtotal");
-
-  	var total = 0.0;
-
-	
-
-  	for (var i = 0; i <sub.length; i++) {
-
-		total += document.getElementsByName("subtotal")[i].value;
-
-	}
-
-	$("#total").html("$ " + total);
-
-    $("#total_evento").val(total);
-
-    evaluar();
-
+    cont = 0;
   }
+}
 
+function eliminarDetalle(indice) {
+  $("#fila" + indice).remove();
 
+  //calcularTotales();
 
-  function evaluar(){
+  modificarSubototales();
 
-  	if (detalles>0)
+  detalles = detalles - 1;
 
-    {
+  evaluar();
+}
 
-      $("#btnGuardar").show();
+$(function () {
+  $(document).on("click", ".borrar", function (event) {
+    event.preventDefault();
 
-    }
+    $(this).closest("tr").remove();
 
-    else
-
-    {
-
-      $("#btnGuardar").show();
-
-      cont=0;
-
-    }
-
-  }
-
-
-
-  function eliminarDetalle(indice){
-
-  	$("#fila" + indice).remove();
-
-  	//calcularTotales();
-
-	modificarSubototales();
-
-  	detalles=detalles-1;
-
-  	evaluar();
-
-  }
-
-
-
-  $(function () {
-
-    $(document).on('click', '.borrar', function (event) {
-
-        event.preventDefault();
-
-        $(this).closest('tr').remove();
-
-		modificarSubototales();
-
-    });
-
-	});
-
-
+    modificarSubototales();
+  });
+});
 
 init();
