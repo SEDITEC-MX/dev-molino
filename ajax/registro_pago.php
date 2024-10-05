@@ -315,14 +315,14 @@ switch ($_GET["op"]) {
 		if (move_uploaded_file($tmpArchivo, $rutaArchivo)) {
 			echo "Archivo subido correctamente";
 		} else {
-			echo "Error al subir el archivo: " . error_get_last()['message'];
+			echo "Error al subir el archivo: ";
 		}
 
-		if (is_uploaded_file($tmpArchivo)) {
-			echo "Archivo subido correctamente";
-		} else {
-			echo "Error al subir el archivo";
-		}
+		// if (is_uploaded_file($tmpArchivo)) {
+		// 	echo "Archivo subido correctamente";
+		// } else {
+		// 	echo "Error al subir el archivo";
+		// }
 
 		$archivo = array(
 			'name' => $nombreArchivo1,
