@@ -89,7 +89,7 @@ function init() {
   });
 
   //Cargamos los items al select proveedor
-  $.post("../ajax/evento.php?op=selectCategoria", function (r) {
+  $.post("../ajax/empleados.php?op=selectCategoria", function (r) {
     $("#id_categoria_servicio").html(r);
     $("#id_categoria_servicio").selectpicker("refresh");
 
