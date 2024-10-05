@@ -1,3 +1,10 @@
+$(document).on('click', '.ver', function() {
+  var rutaArchivo = $(this).data('ruta-archivo');
+  // window.open(rutaArchivo, '_blank');
+  window.open(rutaArchivo, 'VentanaEmergente', 'width=800,height=600');
+});
+
+
 $(document).ready(function () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

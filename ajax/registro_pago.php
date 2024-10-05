@@ -40,6 +40,15 @@ $archivo = isset($_FILES['archivo']);
 
 
 switch ($_GET["op"]) {
+	case 'eliminar_pago':
+		$id_pago = isset($_POST["id_pago"]) ? limpiarCadena($_POST["id_pago"]) : "";
+		$respuesta = $registro_pago->eliminar($id_pago);
+		if ($respuesta) {
+			echo 'Pago eliminado con éxito';
+		} else {
+			echo 'Error al eliminar el pago';
+		}
+		break;
 	case 'registrar_pago':
 		$respuesta = $registro_pago->insertar(
 			$id_evento,
@@ -162,8 +171,8 @@ switch ($_GET["op"]) {
 
 				if (isset($_GET['variacion'])) {
 					$data[] = array(
-						"0" => ('<button class="btn btn-primary reenviar">Reenviar Comprobante</button>' .
-							'<button class="btn btn-danger eliminar">Borrar Pago</button>'
+						"0" => ('<button class="btn btn-primary reenviar" style="display: inline-block;"><i class="fa fa-envelope fa-xs"></i></button>' .
+							'<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fa fa-close fa-xs"></i></button>'
 						),
 						"1" => $fecha_pago,
 						"2" => $nombre_proveedor,
@@ -178,9 +187,9 @@ switch ($_GET["op"]) {
 					);
 				} else {
 					$data[] = array(
-						"0" => ('<button class="btn btn-primary reenviar">Reenviar Comprobante</button>' .
-							'<button class="btn btn-danger eliminar">Borrar Pago</button>' .
-							'<button class="btn btn-info editar-pago">Editar Categoría del pago</button>'
+						"0" => ('<button class="btn btn-primary reenviar" style="display: inline-block;"><i class="fa fa-envelope fa-xs"></i></button>' .
+							'<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fa fa-close"></i></button>' .
+							'<button class="btn btn-info editar-pago" style="display: inline-block;"><i class="fas fa-pencil-alt fa-xs"></i></button>'
 						),
 						"1" => $fecha_pago,
 						"2" => $nombre_proveedor,
@@ -298,12 +307,29 @@ switch ($_GET["op"]) {
 		$tipoArchivo = $archivo['type'];
 		$tamanoArchivo = $archivo['size'];
 		$tmpArchivo = $archivo['tmp_name'];
-		// Verificar si el archivo es válido
-		if ($tamanoArchivo > 0) {
-			// Mover el archivo a una carpeta específica
-			$rutaArchivo = '../archivos/comprobante/' . $nombreArchivo;
-			move_uploaded_file($tmpArchivo, $rutaArchivo);
+		
+		// Mover el archivo a una carpeta específica
+		$nombreArchivo1 = time() . $nombreArchivo;
+		$rutaArchivo = '../archivos/comprobante/' . $nombreArchivo1;
+		
+		if (move_uploaded_file($tmpArchivo, $rutaArchivo)) {
+			echo "Archivo subido correctamente";
+		} else {
+			echo "Error al subir el archivo: " . error_get_last()['message'];
 		}
+
+		if (is_uploaded_file($tmpArchivo)) {
+			echo "Archivo subido correctamente";
+		} else {
+			echo "Error al subir el archivo";
+		}
+
+		$archivo = array(
+			'name' => $nombreArchivo1,
+			'type' => $tipoArchivo,
+			'size' => $tamanoArchivo,
+			'tmp_name' => $rutaArchivo
+		);
 
 		$correo = "julio.garces@outlook.com";
 		$respuesta = $registro_pago->insertarCaja(
@@ -318,28 +344,13 @@ switch ($_GET["op"]) {
 			$id_usuario,
 			$archivo
 		);
-
-		$correo = new Mail();
+	
 		$aux = new FuncionesComunes();
 		$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);
 		$monto_pago = "$ " . number_format($monto_pago, 2);
 		$resultado;
 		if ($respuesta) {
 			$resultado = "Pago registrado";
-			if ($correo->enviarCorreoPago(
-				$email_pago,
-				$_SESSION['email_usuario'],
-				$fecha_pago,
-				$monto_pago,
-				$metodo_pago,
-				$nombre_proveedor,
-				$notas_pago,
-				$nombre_evento_seleccionado
-			)) {
-				$resultado .= " y correo enviado correctamente.";
-			} else {
-				$resultado .= ". El pago no pudo ser enviado.";
-			}
 		} else {
 			$resultado = "El pago no se pudo registrar.";
 		}
@@ -353,17 +364,9 @@ switch ($_GET["op"]) {
 		$total = 0;
 
 		$data = array();
-		if (count($listaPagos) == 0) { //Si no hay historial de
-			// echo "<tr class='filas'>
-			// 		<td colspan='6'>No hay historial de cobros para este evento</td>
-			// 	 </tr>";
-			$data[] = array(
-				// "0" => "No hay historial de cobros para este evento",
-				// "1" => ""
-			);
-			$results = array(
-				"aaData" => []
-			);
+		if (count($listaPagos) == 0) { 
+			$data[] = array();
+			$results = array("aaData" => []);
 			echo json_encode($results);
 		} else {
 			$aux = new FuncionesComunes();
@@ -382,12 +385,13 @@ switch ($_GET["op"]) {
 				$id_categoria_servicio = $pago['id_categoria_servicio'];
 				$status_pago = $pago['status_pago'];
 				$metodo_pago = $aux->asignarMetodoCobro($metodo_pago);
+				$archivo = $pago['nombreArchivo'];
 
 				if (isset($_GET['variacion'])) {
 					$data[] = array(
-						"0" => ('<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fas fa-close"></i></button>' .
-        '<button class="btn btn-primary eliminar" style="display: inline-block; margin-left: 5px;"><i class="fa fa-search fa-xs"></i></button>'
-       ),
+						"0" => ('<button class="btn btn-danger eliminar_caja" style="display: inline-block;" id="'.$id_pago.'"><i class="fas fa-close"></i></button>'.
+        						'<button class="btn btn-primary ver" style="display: inline-block; margin-left: 5px;" data-ruta-archivo="/archivos/comprobante/'.$archivo.'"><i class="fa fa-search fa-xs"></i></button>'
+       							),
 						"1" => $fecha_pago,
 						"2" => "$ " . number_format($monto_pago, 2),
 						"3" => $nombre_evento,
@@ -397,9 +401,9 @@ switch ($_GET["op"]) {
 					);
 				} else {
 					$data[] = array(
-						"0" => ('<button class="btn btn-danger eliminar" style="display: inline-block;"><i class="fas fa-close"></i></button>' .
-        '<button class="btn btn-primary eliminar" style="display: inline-block; margin-left: 5px;"><i class="fa fa-search fa-xs"></i></button>'
-       ),
+						"0" => ('<button class="btn btn-danger eliminar_caja" style="display: inline-block;" id="'.$id_pago.'"><i class="fas fa-close"></i></button>'.
+								'<button class="btn btn-primary ver" style="display: inline-block; margin-left: 5px;" data-ruta-archivo="/archivos/comprobante/'.$archivo.'"><i class="fa fa-search fa-xs"></i></button>'
+						   		),
 						"1" => $fecha_pago,
 						"2" => "$ " . number_format($monto_pago, 2),
 						"3" => $nombre_evento,

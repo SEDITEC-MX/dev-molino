@@ -261,6 +261,27 @@ function init() {
       .DataTable();
   }
 
+  $(document).on('click', '.eliminar_caja', function() {
+    var id_pago = $(this).attr('id');
+    console.log(id_pago);
+    var confirmacion = confirm('¿Estás seguro de eliminar este pago?');
+    if (confirmacion) {
+        $.ajax({
+            type: 'POST',
+            url: '../ajax/registro_pago.php?op=eliminar_pago',
+            data: {id_pago: id_pago},
+            success: function(data) {
+                if (data == 'Pago eliminado con éxito') {
+                    alert('Pago eliminado con éxito');
+                    location.reload();
+                } else {
+                    alert('Error al eliminar el pago');
+                }
+            }
+        });
+    }
+});
+
   function registrar_caja(e) {
     e.preventDefault(); //No se activará la acción predeterminada del evento
     $("#formularioregistros .loading-gif").removeClass("hidden");

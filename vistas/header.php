@@ -137,7 +137,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="cobro.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Eventos </a></li>
-                <li><a href="registro_cobro.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar Cobro de Evento </a></li>
+                <li><a href="registro_cobro.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar Cobro Evento </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -162,7 +162,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="proveedores.php"><i class="fas fa-play-circle"></i>&nbsp;Catálogo de Proveedores </a></li>
+                <li><a href="proveedores.php"><i class="fas fa-play-circle"></i>&nbsp;Catálogo Proveedores </a></li>
               </ul>
             </li>
           <?php } ?>
@@ -187,7 +187,7 @@
             </a>
             <ul class="treeview-menu">
               <li><a href="caja.php"><i class="fas fa-play-circle"></i>&nbsp;Listar Caja Chica </a></li>
-              <li><a href="registro_caja.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar gasto de Caja Chica </a></li>
+              <li><a href="registro_caja.php"><i class="fas fa-play-circle"></i>&nbsp;Registrar Caja Chica </a></li>
             </ul>
           </li>
           <hr>

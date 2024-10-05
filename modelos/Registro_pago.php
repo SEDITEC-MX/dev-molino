@@ -3,15 +3,12 @@
 // require "../config/conec.php";
 require "../config/conecPDO.php";
 
-Class Registro_pago
+class Registro_pago
 {
-	public function __construct()
-	{
-
-	}
+	public function __construct() {}
 
 
-/*
+	/*
 Columnas de la tabla 'pagos'
 id_pago int(11)
 id_evento int(11)
@@ -33,9 +30,8 @@ email_pago varchar(200)
 		$notas_pago,
 		$id_categoria_servicio,
 		$id_usuario
-	)
-	{
-		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
+	) {
+		$sql = "INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
 		email_pago, notas_pago, id_categoria_servicio,id_usuario) 
 		VALUES (
 		'$id_evento', '$id_proveedor', '$fecha_pago', '$monto_pago', 
@@ -43,7 +39,6 @@ email_pago varchar(200)
 		)";
 
 		return ejecutarConsulta($sql);
-
 	}
 
 	public function insertarCaja(
@@ -57,21 +52,21 @@ email_pago varchar(200)
 		$id_categoria_servicio,
 		$id_usuario,
 		$archivo
-	)
-	{
-		$sql="INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
-		email_pago, notas_pago, id_categoria_servicio, id_usuario) 
+	) {
+		$sql = "INSERT INTO pagos (id_evento, id_proveedor, fecha_pago, monto_pago, metodo_pago, 
+		email_pago, notas_pago, id_categoria_servicio, id_usuario, status_pago) 
 		VALUES (
 		'$id_evento', '$id_proveedor', '$fecha_pago', '$monto_pago', 
-			'$metodo_pago',  '$email_pago', '$notas_pago', '$id_categoria_servicio', '$id_usuario'
+			'$metodo_pago',  '$email_pago', '$notas_pago', '$id_categoria_servicio', '$id_usuario',
+			'pendiente'
 		)";
 
 		$id_pago_new = ejecutarConsulta_retornarID($sql);
 
 		$nombreArchivo = $archivo['name'];
-		$tmpArchivo = $archivo['tmp_name'];
-		$rutaArchivo = '../archivos/' . $nombreArchivo;
-		move_uploaded_file($tmpArchivo, $rutaArchivo);
+		// $tmpArchivo = $archivo['tmp_name'];
+		// $rutaArchivo = '../archivos/' . $nombreArchivo;
+		// move_uploaded_file($tmpArchivo, $rutaArchivo);
 
 		$sql_comprobante = "INSERT INTO archivos (
 							nombreArchivo, 
@@ -83,7 +78,7 @@ email_pago varchar(200)
 							'comprobante',
 							'$fecha_pago',
 							'$id_pago_new')";
-		
+
 		return ejecutarConsulta($sql_comprobante);
 	}
 
@@ -91,7 +86,7 @@ email_pago varchar(200)
 	public function verificarTotalEventos($id_evento) //Checa la suma del evento
 	{
 		$arregloDatos = array($id_evento);
-		$sql="SELECT SUM(detalle_evento.cantidad_detalle_evento * detalle_evento.precio_detalle_evento) AS total
+		$sql = "SELECT SUM(detalle_evento.cantidad_detalle_evento * detalle_evento.precio_detalle_evento) AS total
 			FROM evento
 			LEFT JOIN detalle_evento ON evento.id_evento = detalle_evento.id_evento
 			WHERE evento.id_evento = ?
@@ -102,7 +97,7 @@ email_pago varchar(200)
 	public function verificarTotalPagos($id_evento) //Checa la suma de los pagos
 	{
 		$arregloDatos = array($id_evento);
-		$sql="SELECT SUM(pagos.monto_pago) AS cobrado
+		$sql = "SELECT SUM(pagos.monto_pago) AS cobrado
 			FROM evento
 			LEFT JOIN pagos ON evento.id_evento = pagos.id_evento
 			WHERE evento.id_evento = ?
@@ -113,13 +108,13 @@ email_pago varchar(200)
 	public function eliminar($id_pago)
 	{
 		$arregloDatos = array($id_pago);
-		$sql="DELETE FROM pagos WHERE id_pago = ?";
+		$sql = "DELETE FROM pagos WHERE id_pago = ?";
 		return ejecutarConsulta($sql, $arregloDatos);
 	}
 
 	public function mostrar($id_evento)
 	{
-		$sql="SELECT 
+		$sql = "SELECT 
 		id_evento, 
 		DATE_FORMAT(fecha_evento, '%Y-%m-%d') as fecha_evento, 
 		nombre_evento, 
@@ -137,7 +132,7 @@ email_pago varchar(200)
 
 	public function listarDetalle($id_evento)
 	{
-		$sql="SELECT 
+		$sql = "SELECT 
 		de.id_evento,
 		de.id_servicio,
 		s.nombre_servicio,
@@ -152,7 +147,7 @@ email_pago varchar(200)
 	// Listar eventos
 	public function listarEventos()
 	{
-		$sql="SELECT
+		$sql = "SELECT
 		id_evento,
         DATE_FORMAT(fecha_evento, '%d/%m/%Y') as fecha_evento,
         nombre_evento,
@@ -171,7 +166,7 @@ email_pago varchar(200)
 	// Listar nombre eventos
 	public function listarNombreEventos()
 	{
-		$sql="SELECT id_evento, nombre_evento 
+		$sql = "SELECT id_evento, nombre_evento 
 		FROM evento 
 		WHERE estado_evento = 'Programado' 
 		ORDER BY TIMESTAMP(fecha_evento)";
@@ -181,7 +176,7 @@ email_pago varchar(200)
 	// Listar nombre proveedores
 	public function listarNombreProveedores()
 	{
-		$sql="SELECT id_proveedor, nombre_proveedor 
+		$sql = "SELECT id_proveedor, nombre_proveedor 
 		FROM proveedores 
 		WHERE condicion_proveedor = 1";
 		return ejecutarSelect($sql);
@@ -191,7 +186,7 @@ email_pago varchar(200)
 	public function listarPagos($id_evento)
 	{
 		$arregloDatos = array($id_evento);
-		$sql="SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, pagos.metodo_pago, 
+		$sql = "SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, pagos.metodo_pago, 
 		pagos.email_pago, pagos.notas_pago, proveedores.nombre_proveedor, 
 		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
 		FROM pagos
@@ -205,13 +200,14 @@ email_pago varchar(200)
 	public function listarPagosCaja($id_usuario)
 	{
 		$arregloDatos = array($id_usuario);
-		$sql="SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, evento.nombre_evento, pagos.metodo_pago, 
+		$sql = "SELECT pagos.id_pago, pagos.fecha_pago, pagos.monto_pago, evento.nombre_evento, pagos.metodo_pago, 
 		pagos.email_pago, pagos.notas_pago, status_pago, proveedores.nombre_proveedor, 
-		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio
+		servicio.nombre_categoria_servicio, servicio.id_categoria_servicio, archivo.nombreArchivo
 		FROM pagos
 		INNER JOIN proveedores ON pagos.id_proveedor = proveedores.id_proveedor
 		LEFT JOIN categoria_servicio AS servicio ON pagos.id_categoria_servicio = servicio.id_categoria_servicio
-		LEFT JOIN evento AS evento ON pagos.id_evento = evento.id_evento   
+		LEFT JOIN evento AS evento ON pagos.id_evento = evento.id_evento
+		LEFT JOIN archivos AS archivo ON pagos.id_pago = archivo.id_pago      
 		WHERE metodo_pago = 'EF' AND id_usuario = ? 
 		ORDER BY TIMESTAMP(fecha_pago)";
 		return ejecutarSelect($sql, $arregloDatos);
@@ -219,7 +215,7 @@ email_pago varchar(200)
 
 	public function ingresocabecera($id_evento)
 	{
-		$sql="SELECT 
+		$sql = "SELECT 
 		id_evento,
 		date(fecha_evento) as fecha,
 		nombre_evento,
@@ -236,7 +232,7 @@ email_pago varchar(200)
 
 	public function ingresodetalle($id_evento)
 	{
-		$sql="SELECT 
+		$sql = "SELECT 
 		s.nombre_servicio as servicio,
 		d.cantidad_detalle_evento,
 		d.precio_detalle_evento,
@@ -260,9 +256,8 @@ email_pago varchar(200)
 		$id_servicio,
 		$cantidad_detalle_evento,
 		$precio_detalle_evento
-	)
-	{
-		$sql="UPDATE evento
+	) {
+		$sql = "UPDATE evento
 		SET 
 		fecha_evento = '$fecha_evento',
 		nombre_evento = '$nombre_evento',
@@ -275,14 +270,13 @@ email_pago varchar(200)
 
 		ejecutarConsulta($sql);
 
-		$sqldel="DELETE FROM detalle_evento WHERE id_evento='$id_evento'";
+		$sqldel = "DELETE FROM detalle_evento WHERE id_evento='$id_evento'";
 		ejecutarConsulta($sqldel);
-			
-			$num_elementos=0;
-			$sw=true;
-			
-			while ($num_elementos < count($id_servicio))
-			{
+
+		$num_elementos = 0;
+		$sw = true;
+
+		while ($num_elementos < count($id_servicio)) {
 			$sql_detalle = "INSERT INTO detalle_evento (
 				id_evento,
 				id_servicio,
@@ -296,26 +290,21 @@ email_pago varchar(200)
 				)";
 
 			ejecutarConsulta($sql_detalle) or $sw = false;
-			$num_elementos=$num_elementos + 1;
-			}
-
-			return $sw;
-
+			$num_elementos = $num_elementos + 1;
 		}
 
-		public function actualizarCategoriaServicio(
-			$id_pago,
-			$id_categoria_servicio,
-		)
-		{
-			$arregloDatos = array($id_categoria_servicio, $id_pago);
-			$sql="UPDATE pagos 
+		return $sw;
+	}
+
+	public function actualizarCategoriaServicio(
+		$id_pago,
+		$id_categoria_servicio,
+	) {
+		$arregloDatos = array($id_categoria_servicio, $id_pago);
+		$sql = "UPDATE pagos 
 			SET id_categoria_servicio = ?
 			WHERE id_pago = ? ";
-			
-			return ejecutarConsulta($sql, $arregloDatos);
-	
-		}
-}
 
-?>
+		return ejecutarConsulta($sql, $arregloDatos);
+	}
+}
